@@ -3,7 +3,7 @@
 
 # ## Elastic Properties
 # ### Code for extracting elastic tensor and calculating mechanical properties from VASP OUTCAR
-# 
+#
 # Equations can be found at https://www.materialsproject.org/wiki/index.php/Elasticity_calculations
 
 # In[86]:
@@ -14,7 +14,7 @@ import numpy as np
 # In[87]:
 
 def get_elastic_tensor(filename):
-    ''' Reads the elastic tensor from the OUTCAR. 
+    ''' Reads the elastic tensor from the OUTCAR.
     Args:
         filename : the name of the vasp OUTCAR
     Returns:
@@ -28,7 +28,7 @@ def get_elastic_tensor(filename):
     for line in lines:
         inp = line.split()
         if inp == []:
-            continue 
+            continue
         if len(inp) < 4 or len(inp) > 7:
             continue
         if len(inp) == 4 and inp[0] == 'TOTAL':
@@ -73,7 +73,7 @@ Kv = ((Cij[0,0] + Cij[1,1] + Cij[2,2]) + 2 * (Cij[0,1] + Cij[1,2] + Cij[2,0])) /
 
 # In[92]:
 
-Kr = 1/((Sij[0,0] + Sij[1,1] + Sij[2,2]) + 2 * (Sij[0,1] + Sij[1,2] + Sij[2,0])) 
+Kr = 1/((Sij[0,0] + Sij[1,1] + Sij[2,2]) + 2 * (Sij[0,1] + Sij[1,2] + Sij[2,0]))
 
 
 # ### Voigt shear modulus $G_v$ $(GPa)$
@@ -81,7 +81,8 @@ Kr = 1/((Sij[0,0] + Sij[1,1] + Sij[2,2]) + 2 * (Sij[0,1] + Sij[1,2] + Sij[2,0]))
 
 # In[93]:
 
-Gv = (4 * (Cij[0,0] + Cij[1,1] + Cij[2,2]) - 4 * (Cij[0,1] + Cij[1,2] + Cij[2,0]) + 3 * (Cij[3,3] + Cij[4,4] + Cij[5,5]))/15
+#Gv = (4 * (Cij[0,0] + Cij[1,1] + Cij[2,2]) - 4 * (Cij[0,1] + Cij[1,2] + Cij[2,0]) + 3 * (Cij[3,3] + Cij[4,4] + Cij[5,5]))/15
+Gv = (Cij[0,0] + Cij[1,1] + Cij[2,2]) - (Cij[0,1] + Cij[1,2] + Cij[2,0]) + 3 * (Cij[3,3] + Cij[4,4] + Cij[5,5])
 
 
 # ### Reuss shear modulus $G_v$ $(GPa)$
