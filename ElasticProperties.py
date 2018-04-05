@@ -65,7 +65,7 @@ Sij = np.linalg.inv(Cij)
 
 # In[91]:
 
-Kv = ((Cij[0,0] + Cij[1,1] + Cij[2,2]) + 2 * (Cij[0,1] + Cij[1,2] + Cij[2,0])) / 9
+Kv = ((Cij[0,0] + Cij[1,1] + Cij[2,2]) + 2 * (Cij[0,1] + Cij[1,2] + Cij[2,0])) / 9.0
 
 
 # ### Reuss bulk modulus $K_R$ $(GPa)$
@@ -73,7 +73,7 @@ Kv = ((Cij[0,0] + Cij[1,1] + Cij[2,2]) + 2 * (Cij[0,1] + Cij[1,2] + Cij[2,0])) /
 
 # In[92]:
 
-Kr = 1/((Sij[0,0] + Sij[1,1] + Sij[2,2]) + 2 * (Sij[0,1] + Sij[1,2] + Sij[2,0]))
+Kr = 1.0/((Sij[0,0] + Sij[1,1] + Sij[2,2]) + 2 * (Sij[0,1] + Sij[1,2] + Sij[2,0]))
 
 
 # ### Voigt shear modulus $G_v$ $(GPa)$
@@ -81,7 +81,6 @@ Kr = 1/((Sij[0,0] + Sij[1,1] + Sij[2,2]) + 2 * (Sij[0,1] + Sij[1,2] + Sij[2,0]))
 
 # In[93]:
 
-#Gv = (4 * (Cij[0,0] + Cij[1,1] + Cij[2,2]) - 4 * (Cij[0,1] + Cij[1,2] + Cij[2,0]) + 3 * (Cij[3,3] + Cij[4,4] + Cij[5,5]))/15
 Gv = ((Cij[0,0] + Cij[1,1] + Cij[2,2]) - (Cij[0,1] + Cij[1,2] + Cij[2,0]) + 3 * (Cij[3,3] + Cij[4,4] + Cij[5,5]))/15.0
 
 
@@ -122,7 +121,7 @@ print "Isotropic Poisson ratio: ", mu
 
 # In[85]:
 
-Cij
+#print Cij
 
 
 # In[ ]:
