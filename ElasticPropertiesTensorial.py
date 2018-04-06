@@ -6,7 +6,7 @@
 #
 # Equations can be found at https://www.materialsproject.org/wiki/index.php/Elasticity_calculations
 
-# In[3]:
+# In[1]:
 
 
 #get_ipython().magic('matplotlib inline')
@@ -27,7 +27,7 @@ cx1 = cubehelix.cmap()
 cx2 = cubehelix.cmap(reverse=True)
 
 
-# In[6]:
+# In[2]:
 
 
 def get_elastic_tensor(filename):
@@ -56,7 +56,7 @@ def get_elastic_tensor(filename):
     return np.asarray(elastic_tensor).astype(np.float)
 
 
-# In[7]:
+# In[3]:
 
 
 def VoigtMat():
@@ -64,14 +64,14 @@ def VoigtMat():
     return a
 
 
-# In[8]:
+# In[4]:
 
 
 def SVoigtCoeff(p,q):
     return 1/(np.ceil((p+1.)/3.)*np.ceil((q+1.)/3.))
 
 
-# In[9]:
+# In[5]:
 
 
 def Smat(SVoigt):
@@ -85,7 +85,7 @@ def Smat(SVoigt):
     return SM
 
 
-# In[10]:
+# In[6]:
 
 
 def dirVector(theta,phi):
@@ -93,7 +93,8 @@ def dirVector(theta,phi):
     return a
 
 
-# In[11]:
+
+# In[7]:
 
 
 def dirVector2(theta,phi,chi):
@@ -101,7 +102,7 @@ def dirVector2(theta,phi,chi):
     return a
 
 
-# In[12]:
+# In[8]:
 
 
 def YoungModulus(theta,phi,Sij):
@@ -117,7 +118,7 @@ def YoungModulus(theta,phi,Sij):
     return mod
 
 
-# In[13]:
+# In[9]:
 
 
 def ShearModulus(theta,phi,chi,Sij):
@@ -134,7 +135,7 @@ def ShearModulus(theta,phi,chi,Sij):
     return mod
 
 
-# In[14]:
+# In[10]:
 
 
 def linearCompressibility(theta, phi, Sij):
@@ -150,7 +151,7 @@ def linearCompressibility(theta, phi, Sij):
 
 # ### Elastic tensor $C_{ij}$
 
-# In[15]:
+# In[11]:
 
 
 elastic_tensor = get_elastic_tensor('OUTCAR')
@@ -158,7 +159,7 @@ elastic_tensor = get_elastic_tensor('OUTCAR')
 
 # ### Divide by 10 to convert kBar to GPa
 
-# In[16]:
+# In[12]:
 
 
 Cij = elastic_tensor/10.0
@@ -168,7 +169,7 @@ Cij
 # ### Compliance tensor $s_{ij}$ $(GPa^{-1})$
 # $s_{ij} = C_{ij}^{-1}$
 
-# In[17]:
+# In[13]:
 
 
 Sij = np.linalg.inv(Cij)
@@ -177,7 +178,7 @@ Sij = np.linalg.inv(Cij)
 # ### Voigt bulk modulus $K_v$ $(GPa)$
 # $9K_v = (C_{11}+C_{22}+C_{33}) + 2(C_{12} + C_{23} + C_{31}) $
 
-# In[18]:
+# In[14]:
 
 
 Kv = ((Cij[0,0] + Cij[1,1] + Cij[2,2]) + 2 * (Cij[0,1] + Cij[1,2] + Cij[2,0])) / 9.0
@@ -187,7 +188,7 @@ Kv
 # ### Reuss bulk modulus $K_R$ $(GPa)$
 # $1/K_R = (s_{11}+s_{22}+s_{33}) + 2(s_{12} + s_{23} + s_{31})$
 
-# In[19]:
+# In[15]:
 
 
 Kr = 1.0/((Sij[0,0] + Sij[1,1] + Sij[2,2]) + 2 * (Sij[0,1] + Sij[1,2] + Sij[2,0]))
@@ -197,7 +198,7 @@ Kr
 # ### Voigt shear modulus $G_v$ $(GPa)$
 # $15 G_v = (C_{11}+C_{22}+C_{33}) - (C_{12} + C_{23} + C_{31}) + 3(C_{44} + C_{55} + C_{66})$
 
-# In[20]:
+# In[16]:
 
 
 Gv = ((Cij[0,0] + Cij[1,1] + Cij[2,2]) - (Cij[0,1] + Cij[1,2] + Cij[2,0]) + 3 * (Cij[3,3] + Cij[4,4] + Cij[5,5]))/15.0
@@ -207,7 +208,7 @@ Gv
 # ### Reuss shear modulus $G_v$ $(GPa)$
 # $ 15/G_R = 4(s_{11}+s_{22}+s_{33}) - 4(s_{12} + s_{23} + s_{31}) + 3(s_{44} + s_{55} + s_{66})$
 
-# In[21]:
+# In[17]:
 
 
 Gr = 15.0 / (4 * (Sij[0,0] + Sij[1,1] + Sij[2,2]) - 4 * (Sij[0,1] + Sij[1,2] + Sij[2,0]) + 3 * (Sij[3,3] + Sij[4,4] + Sij[5,5]))
@@ -217,7 +218,7 @@ Gr
 # ### Voigt-Reuss-Hill bulk modulus $K_{VRH}$ $(GPa)$
 # $K_{VRH} = (K_R + K_v)/2$
 
-# In[22]:
+# In[18]:
 
 
 Kvrh = (Kv + Kr)/2
@@ -227,7 +228,7 @@ Kvrh
 # ### Voigt-Reuss-Hill shear modulus $G_{VRH}$ $(GPa)$
 # $G_{VRH} = (G_R + G_v)/2$
 
-# In[23]:
+# In[19]:
 
 
 Gvrh = (Gv + Gr)/2
@@ -237,7 +238,7 @@ Gvrh
 # ### Isotropic Poisson ratio $\mu$
 # $\mu = (3K_{VRH} - 2G_{VRH})/(6K_{VRH} + 2G_{VRH})$
 
-# In[24]:
+# In[20]:
 
 
 mu = (3 * Kvrh - 2 * Gvrh) / (6 * Kvrh + 2 * Gvrh )
@@ -245,14 +246,14 @@ mu = (3 * Kvrh - 2 * Gvrh) / (6 * Kvrh + 2 * Gvrh )
 
 # ## Tensorial Analysis
 
-# In[25]:
+# In[21]:
 
 
 a = YoungModulus(0.,0.4475,Sij)
 a
 
 
-# In[29]:
+# In[26]:
 
 
 a = np.arange(0,2*np.pi,np.pi/60)
@@ -260,12 +261,12 @@ YoungsDirectional = []
 for i in a:
     for j in a:
         YoungsDirectional.append(YoungModulus(i,j,Sij))
-print max(YoungsDirectional)
+print (max(YoungsDirectional))
 
 
 # ## Plot of Young's modulus against $\theta$ and $\phi$
 
-# In[24]:
+# In[27]:
 
 
 x=y=np.arange(0,2*np.pi,np.pi/10)
@@ -286,13 +287,13 @@ plt.show()
 
 # ## Plot of linear compressibility against $\theta$ and $\phi$
 
-# In[25]:
+# In[28]:
 
 
 x=y=np.arange(0,2*np.pi,np.pi/10)
 X, Y = np.meshgrid(x, y)
 Z = linearCompressibility(X,Y,Sij)
-print np.amin(Z)
+print (np.amin(Z))
 im = plt.imshow(Z,cmap=cx2,extent=(0,6,0,6),origin='lower')
 cset = plt.contour(Z,np.arange(np.amin(Z),np.amax(Z),0.002),linewidths=2,cmap=cx1,extent=(0,6,0,6),origin='lower')
 pylab.colorbar(im)
@@ -307,7 +308,7 @@ plt.show()
 
 # ## Plot of shear modulus against $\theta$ and $\phi$ at $\theta = \frac{\pi}{2}$
 
-# In[26]:
+# In[29]:
 
 
 x=y=np.arange(0,2*np.pi,np.pi/10)
